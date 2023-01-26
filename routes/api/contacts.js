@@ -1,4 +1,4 @@
-const express = require('express')
+const express = require("express");
 const {
   listContacts,
   getContactById,
@@ -6,19 +6,19 @@ const {
   addContact,
   updateContact,
 } = require("../../models/contacts");
-const {newContacts, editContacts}= require("../../validation/validation")
-const router = express.Router()
+const { newContacts, editContacts } = require("../../validation/validation");
+const router = express.Router();
 
-router.get('/', async (req, res, next) => {
+router.get("/", async (req, res, next) => {
   try {
     const result = await listContacts();
     res.status(200).json(result);
   } catch (error) {
     next(error);
   }
-})
+});
 
-router.get('/:contactId', async (req, res, next) => {
+router.get("/:contactId", async (req, res, next) => {
   try {
     const { contactId } = req.params;
     const result = await getContactById(contactId);
@@ -29,9 +29,9 @@ router.get('/:contactId', async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-})
+});
 
-router.post('/', async (req, res, next) => {
+router.post("/", async (req, res, next) => {
   try {
     const { error } = newContacts.validate(req.body);
     if (error) {
@@ -42,9 +42,9 @@ router.post('/', async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-})
+});
 
-router.delete('/:contactId', async (req, res, next) => {
+router.delete("/:contactId", async (req, res, next) => {
   try {
     const { contactId } = req.params;
     const result = await removeContact(contactId);
@@ -55,12 +55,13 @@ router.delete('/:contactId', async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-})
+});
+
 
 router.put('/:contactId', async (req, res, next) => {
   try {
     const { body } = req;
-    const { error } = editContacts.validate(req.body);
+    const { error } = editContacts.validate(body);
     if (error || !Object.keys(body).length) {
       res.status(400).json({ message: "missing fields" });
     }
@@ -69,10 +70,10 @@ router.put('/:contactId', async (req, res, next) => {
     if (!result) {
       res.status(404).json({ message: "Not found" });
     }
-    res.status.json(result);
+    res.status(200).json(result);
   } catch (error) {
     next(error);
   }
 })
 
-module.exports = router
+module.exports = router;
