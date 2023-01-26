@@ -53,7 +53,7 @@ async function updateContact(contactId, body) {
     return null;
   };
   contacts[updateID] = {...contacts[updateID],...body };
-  changeContactsPath(contacts);
+  await changeContactsPath(contacts);
   return contacts[updateID];
 };
 
