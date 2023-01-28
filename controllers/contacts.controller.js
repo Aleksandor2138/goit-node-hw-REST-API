@@ -1,9 +1,4 @@
-const { Contact } = require("../models/contacts")
-const {
-  newContacts,
-  editContacts,
-  favoriteSchema,
-} = require("../models/validation");
+const { Contact } = require("../models/contacts");
 
 async function getAllContacts(req, res) {
   const allContacts = await Contact.find()
@@ -24,11 +19,6 @@ async function getContactById(req, res) {
 
 async function addContact(req, res) {
   const body = req.body
-  const { error } = newContacts.validate(body);
-  if (error) {
-    return res.status(400).json({ message: "Not found" });
-  }
-
   const NewContact = await Contact.create(body)
   console.log("NewContact", NewContact)
 
@@ -47,12 +37,6 @@ async function removeContact(req, res) {
 }
 
 async function updateContact(req, res) {
-  const body = req.body;
-  const { error } = editContacts.validate(body);
-  if (error || !Object.keys(body).length) {
-    return res.status(404).json({ message: "missing fields" });
-  }
-
   const { contactId } = req.params
   const upContact = await Contact.findByIdAndUpdate(contactId, req.body, {
     new: true,
@@ -65,12 +49,6 @@ async function updateContact(req, res) {
 }
 
 async function updateStatusContact(req, res) {
-  const body = req.body;
-  const { error } = favoriteSchema.validate(body);
-  if (error) {
-    return res.status(404).json({ message: "missing fields" });
-  }
-
   const { contactId } = req.params
   const upContact = await Contact.findByIdAndUpdate(contactId, req.body, {
     new: true,
